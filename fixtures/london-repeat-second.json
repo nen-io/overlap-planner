@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "anchorZone": "Europe/London",
+  "localDate": "2026-10-25",
+  "meetingInstant": "2026-10-25T01:30:00Z",
+  "durationMinutes": 60,
+  "participants": [
+    {
+      "zone": "Europe/London",
+      "workStartHour": 9,
+      "workEndHour": 18
+    },
+    {
+      "zone": "Asia/Taipei",
+      "workStartHour": 13,
+      "workEndHour": 22
+    },
+    {
+      "zone": "America/New_York",
+      "workStartHour": 8,
+      "workEndHour": 17
+    }
+  ]
+}
