@@ -11,3 +11,9 @@ Primary journey: choose a date, move the meeting across the real day, adjust dur
 Invalid date, zone/hour or URL data gets a nearby warning while committed state remains valid. No shared-working-time day gets an honest explanation, not an invented recommendation. At least one participant stays present and the Add control explains the six-city limit. Dates are deterministic in the initial example, so screenshots and walkthroughs do not expire daily.
 
 Phone layout stacks city identity, local summary and band; controls wrap with a two-column-to-one-column transition. Timeline tick labels become sparse while the native slider and textual time picker stay fully usable. 320px, text scaling, keyboard operation, strong focus states and reduced motion are acceptance checks. Supporting text uses a dark enough gray/indigo palette to meet normal text contrast. No remote font, icon font, decorative map request or analytics.
+
+## Refinement: compare shared starts without losing your place
+
+The meeting card now adds a compact grid of real shared starts. Each card gives its anchor time and UTC offset, plus the local clock in every included city. Six cards appear per page; all are derived from the existing full-interval-checked 15-minute suggestion grid. The selected card is explicit, and the exact-minute clock/slider remain available. At narrow widths the cards stack from three to two to one column. Supporting labels throughout the shell are at least 11 CSS pixels.
+
+The meeting picker stays mounted while its instant changes. Consecutive arrow presses preserve slider focus and advance one minute each; changes to the committed instant reset clock draft/error/ambiguity state without replacing the input node. An externally restored URL starts a new editor generation, retiring stale work-hour forms before they can overwrite the restored settings.

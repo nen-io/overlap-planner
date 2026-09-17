@@ -66,3 +66,11 @@ Consulted 17 September 2026. `@js-temporal/polyfill` version 0.5.1 is pinned wit
 - [Temporal polyfill repository](https://github.com/js-temporal/temporal-polyfill): package scope and Intl/runtime behavior.
 - [React useMemo](https://react.dev/reference/react/useMemo): derived slot calculations depend on date, zone, duration and participant windows, not the moving instant.
 - [Vite static deployment](https://vite.dev/guide/static-deploy): relative `base` supports a GitHub repository subpath.
+
+## Stable selection and shared-start presentation
+
+`components/SharedStarts.tsx` filters the already derived `Slot[]` by `allWorking` and paginates six choices. It does not implement a second overlap calculation. Selection sends that slot's exact instant through the existing validated configuration update. Each card converts that same instant through Temporal for local clocks and day shifts; repeated anchor clocks include their UTC offset.
+
+The meeting picker no longer uses the instant as a React key. An effect resets only clock draft, validation error, and occurrence choices when the committed instant/calendar or explicit URL-restore generation changes. The existing slider node keeps focus across keyboard minute changes. City-row keys include that UI restore generation so a form opened for an older shared plan cannot overwrite the new plan with its draft.
+
+Refinement sources checked against official documentation on 17 September 2026: [React state identity](https://react.dev/learn/preserving-and-resetting-state), [React DOM refs](https://react.dev/learn/manipulating-the-dom-with-refs), [Playwright focus/value assertions](https://playwright.dev/docs/test-assertions), and [Temporal ZonedDateTime](https://tc39.es/proposal-temporal/docs/zoneddatetime.html). Dependency versions were retained.

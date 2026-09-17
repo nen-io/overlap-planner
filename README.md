@@ -36,7 +36,7 @@ npm run format:check    # Verify formatting
 
 1. Start with the sample team. Taipei has a later work shift; all hours are adjustable and synthetic.
 2. Move the meeting slider with a pointer or arrow keys, or type an exact `HH:MM` start. Local dates, offsets, day shifts and entire-interval fit update together.
-3. Change duration from 60 to 120 minutes. A start that fit before may no longer fit everyone.
+3. Compare **Moments that fit**: each shared-start card shows all city clocks, and selecting one preserves its exact instant. Change duration from 60 to 120 minutes; a start that fit before may no longer fit everyone.
 4. Try **29 March 2026** anchored to London: the band contains 23 real hours and `01:30` is rejected. Try **25 October 2026**: the band contains 25 hours and `01:30` has two explicitly labelled UTC-offset choices.
 5. Switch the anchor city. The chosen instant stays fixed while its displayed calendar date can change.
 6. Share the URL. Configuration lives in its fragment, so reload restores the exact plan. Clipboard failure leaves a selectable link.
@@ -44,6 +44,7 @@ npm run format:check    # Verify formatting
 ## Engineering worth exploring
 
 - Pure, validated domain model with a curated IANA-zone catalog and Temporal instant/calendar types.
+- A keyboard-stable minute slider and paginated shared starts with local clocks and explicit offsets.
 - Actual 23/24/25-hour timelines. No assumption that a calendar day equals 86,400 seconds.
 - Full meeting checks split at offset transitions and use an exclusive end boundary. An exact work-end is allowed.
 - Explicit nonexistent/repeated-time policy, honest date-change fallback notices and anchor-switch instant preservation.

@@ -36,3 +36,9 @@ Explain instant vs local date, DST policy, limited working-hour model and librar
 ## Completion gate
 
 Implement the behavior and acceptance tests above; document any deliberate limitation. `npm run check` and `npm run test:e2e` must pass. Independently review the code and exercise the production build before release. Verify the public demo at its GitHub repository subpath.
+
+## Usability refinement
+
+- Consecutive slider arrow-key changes preserve focus and move by exact minutes. Clock drafts/errors reset when the committed instant or restored plan changes without remounting the picker.
+- A bounded, paginated grid presents shared starts with anchor UTC offsets and each participant's local time. Suggestions retain the 15-minute grid and existing full-duration checks; repeated wall times remain distinct exact instants.
+- Restoring a URL retires an old work-hour editor, so a stale draft cannot replace restored settings. Shell supporting text is at least 11 CSS pixels and the new grid supports 320px and enlarged text.

@@ -1,5 +1,6 @@
 import { ArrowRight, Check, Clock3 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { SharedStarts } from "./SharedStarts";
 import { Temporal } from "@js-temporal/polyfill";
 import {
   chooseLocalTime,
@@ -13,6 +14,7 @@ import {
 } from "../domain/planner";
 interface Props {
   config: Configuration;
+  resetRevision: number;
   slots: Slot[];
   min: number;
   max: number;
@@ -21,6 +23,7 @@ interface Props {
 }
 export function MeetingPicker({
   config,
+  resetRevision,
   slots,
   min,
   max,
@@ -33,6 +36,23 @@ export function MeetingPicker({
   const [draft, setDraft] = useState(clock(current));
   const [error, setError] = useState("");
   const [choices, setChoices] = useState<Temporal.Instant[]>([]);
+  useEffect(() => {
+    // Reset the clock draft without replacing focused controls when the instant moves.
+    setDraft(
+      clock(
+        Temporal.Instant.from(config.meetingInstant).toZonedDateTimeISO(
+          config.anchorZone,
+        ),
+      ),
+    );
+    setError("");
+    setChoices([]);
+  }, [
+    config.meetingInstant,
+    config.anchorZone,
+    config.localDate,
+    resetRevision,
+  ]);
   const nextSlot =
     slots.find(
       (slot) => slot.allWorking && slot.epochMs >= current.epochMilliseconds,
@@ -81,10 +101,14 @@ export function MeetingPicker({
               type="text"
               inputMode="numeric"
               placeholder="HH:MM"
+              maxLength={5}
+              aria-invalid={Boolean(error) && choices.length === 0}
+              aria-describedby={error ? "meeting-time-error" : undefined}
               value={draft}
               onChange={(event) => {
                 setDraft(event.target.value);
                 setChoices([]);
+                setError("");
               }}
             />
             <button type="submit" aria-label="Set meeting time">
@@ -142,7 +166,11 @@ export function MeetingPicker({
         </div>
       </div>
       {error && (
-        <p className={choices.length ? "notice" : "error"} role="alert">
+        <p
+          id="meeting-time-error"
+          className={choices.length ? "notice" : "error"}
+          role="alert"
+        >
           {error}
         </p>
       )}
@@ -198,6 +226,7 @@ export function MeetingPicker({
           Find shared time <ArrowRight size={15} />
         </button>
       </div>
+      <SharedStarts config={config} slots={slots} onChange={onChange} />
     </section>
   );
 }

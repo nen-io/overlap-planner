@@ -23,3 +23,15 @@
 ## ADR 006 — Small curated catalog and finite suggestion grid
 
 **Context:** A clean portfolio demo should make resource and correctness scope visible. **Alternatives:** arbitrary IANA zones, an unbounded participant list and unconstrained search horizon. **Decision:** eleven curated cities, at most six participants, 2000–2099 dates and a 15-minute suggested-start grid; manual minute selection remains available. **Consequences:** predictable bounded work and explicit overload behavior. Daytime shading is a labelled 07–19 guide rather than invented astronomical data. No performance claims without measurements. **Revisit:** validated demand and profiling for broader zones, larger groups or real solar/calendar data.
+
+## ADR 007 — Stable control identity with bounded shared-start choices
+
+**Context:** The meeting picker was keyed by the selected instant. Each arrow-key adjustment recreated the slider, so focus disappeared after one minute. A single Find button also hid other valid choices, while a same-city work-hour form could retain stale draft hours after an external URL restore.
+
+**Alternatives:** Re-focus every remounted slider; render every minute as a separate control; automatically choose one best time; or preserve the picker and expose a bounded set of exact suggestions.
+
+**Decision:** Keep meeting controls mounted and synchronize their local clock draft only when the committed instant/calendar or explicit restore generation changes. Render up to six shared starts per page from the existing validated slot list, showing anchor offsets and participant local clocks. URL restoration increments a UI-only generation that retires old city editors.
+
+**Consequences:** Keyboard and pointer interaction retain control identity. The domain, minute precision, DST policy, URL schema, and full-interval validation are unchanged. Suggestions are a finite quarter-hour sample, not proof that no other exact-minute start can fit. The UI generation is not serialized or used as time authority. Clock editing remains local until submitted; duration changes alone do not erase the typed draft.
+
+**Revisit:** Real calendar availability, richer ranking, or much larger teams would justify a different suggestion model. Preserve explicit instants and distinguish editor reset boundaries from ordinary updates.

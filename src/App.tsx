@@ -34,6 +34,7 @@ export default function App() {
   const [notice, setNotice] = useState(initial.warning);
   const [error, setError] = useState("");
   const [adding, setAdding] = useState(false);
+  const [planRevision, setPlanRevision] = useState(0);
   const [addZone, setAddZone] = useState("Asia/Kolkata");
   const copyGeneration = useRef(0);
   const [sharing, setSharing] = useState(false);
@@ -84,6 +85,7 @@ export default function App() {
       copyGeneration.current += 1;
       const restored = decodeConfiguration(window.location.hash);
       setConfig(restored.config);
+      setPlanRevision((revision) => revision + 1);
       setNotice(restored.warning || "Plan restored from the shared URL.");
       setError("");
     };
@@ -307,7 +309,7 @@ export default function App() {
           <div>
             {config.participants.map((person, index) => (
               <CityRow
-                key={person.zone}
+                key={`${person.zone}:${planRevision}`}
                 person={person}
                 index={index}
                 config={config}
@@ -423,7 +425,7 @@ export default function App() {
           )}
         </section>
         <MeetingPicker
-          key={`${config.anchorZone}:${config.localDate}:${config.meetingInstant}`}
+          resetRevision={planRevision}
           config={config}
           slots={slots}
           min={bounds.start.epochMilliseconds}
