@@ -74,3 +74,7 @@ Consulted 17 September 2026. `@js-temporal/polyfill` version 0.5.1 is pinned wit
 The meeting picker no longer uses the instant as a React key. An effect resets only clock draft, validation error, and occurrence choices when the committed instant/calendar or explicit URL-restore generation changes. The existing slider node keeps focus across keyboard minute changes. City-row keys include that UI restore generation so a form opened for an older shared plan cannot overwrite the new plan with its draft.
 
 Refinement sources checked against official documentation on 17 September 2026: [React state identity](https://react.dev/learn/preserving-and-resetting-state), [React DOM refs](https://react.dev/learn/manipulating-the-dom-with-refs), [Playwright focus/value assertions](https://playwright.dev/docs/test-assertions), and [Temporal ZonedDateTime](https://tc39.es/proposal-temporal/docs/zoneddatetime.html). Dependency versions were retained.
+
+## Calendar output boundary
+
+`CalendarExport` owns transient title/error/download feedback. It calls the pure `calendarFile` serializer with the current validated configuration and explicitly supplied UUID/creation instant. The serializer knows nothing about browsers or downloads, so DST and escaping tests are deterministic. Blob lifecycle stays in the component. Any new committed configuration retires old success feedback; editing a title does not alter URL state or the meeting itself.

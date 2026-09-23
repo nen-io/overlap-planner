@@ -1,14 +1,16 @@
 # Overlap
 
+This is a recent AI-assisted portfolio demonstration with executable checks and documented limits; it is not evidence of prior production usage.
+
 **Different places. One considerate meeting.**
 
 Overlap is a time-zone planner built around actual instants, real daylight-saving transitions and whole-meeting working-hour checks. Move one meeting through a day and see what that moment means in London, Taipei, New York and eight other supported cities.
 
 ![Overlap desktop planner](docs/screenshots/desktop.png)
 
-[Mobile view](docs/screenshots/mobile.png) · [Behavior specification](SPEC.md) · [Architecture](docs/ARCHITECTURE.md) · [Decision records](docs/DECISIONS.md)
+[Mobile view](docs/screenshots/mobile.png) · [Calendar handoff](docs/screenshots/calendar-export.png) · [Behavior specification](SPEC.md) · [Architecture](docs/ARCHITECTURE.md) · [Decision records](docs/DECISIONS.md)
 
-**[Open the live demo](https://nen-io.github.io/overlap-planner/)** · [CI checks](https://github.com/nen-io/overlap-planner/actions)
+**[Open the live demo](https://nen-io.github.io/overlap-planner/)** · [Three-minute engineering walkthrough](docs/REVIEWER_GUIDE.md) · [CI checks](https://github.com/nen-io/overlap-planner/actions)
 
 ## Run it
 
@@ -39,7 +41,8 @@ npm run format:check    # Verify formatting
 3. Compare **Moments that fit**: each shared-start card shows all city clocks, and selecting one preserves its exact instant. Change duration from 60 to 120 minutes; a start that fit before may no longer fit everyone.
 4. Try **29 March 2026** anchored to London: the band contains 23 real hours and `01:30` is rejected. Try **25 October 2026**: the band contains 25 hours and `01:30` has two explicitly labelled UTC-offset choices.
 5. Switch the anchor city. The chosen instant stays fixed while its displayed calendar date can change.
-6. Share the URL. Configuration lives in its fragment, so reload restores the exact plan. Clipboard failure leaves a selectable link.
+6. Use **Download calendar file** to hand the committed selection to your calendar. The .ics file contains UTC start/end instants, city-local times and your local-only title; it sends no invitations. Each download is a new standalone event, so importing repeatedly may create duplicates.
+7. Share the URL. Configuration lives in its fragment, so reload restores the exact plan. Clipboard failure leaves a selectable link.
 
 ## Engineering worth exploring
 
@@ -50,6 +53,7 @@ npm run format:check    # Verify formatting
 - Explicit nonexistent/repeated-time policy, honest date-change fallback notices and anchor-switch instant preservation.
 - One to six unique participants, bounded URL parsing, safe fallback and DOM text rendering.
 - URL snapshots without accounts, uploads, analytics or localStorage; stale clipboard completions cannot mislabel a newer plan.
+- RFC 5545 calendar export with exact UTC instants, byte-aware UTF-8 folding and no invite or booking side effects.
 - Production CSP, readable architecture/security/scaling notes and tests under three different host time zones.
 
 ## Limits

@@ -35,3 +35,9 @@
 **Consequences:** Keyboard and pointer interaction retain control identity. The domain, minute precision, DST policy, URL schema, and full-interval validation are unchanged. Suggestions are a finite quarter-hour sample, not proof that no other exact-minute start can fit. The UI generation is not serialized or used as time authority. Clock editing remains local until submitted; duration changes alone do not erase the typed draft.
 
 **Revisit:** Real calendar availability, richer ranking, or much larger teams would justify a different suggestion model. Preserve explicit instants and distinguish editor reset boundaries from ordinary updates.
+
+## A calendar file preserves an instant, not a zone rule
+
+The handoff emits one RFC 5545 VEVENT with UTC DTSTART and exclusive DTEND. This avoids floating times and VTIMEZONE duplication: both London 01:30 occurrences stay distinct, and duration means real elapsed minutes across DST. City-local date/time/offset text explains the selection to a human. No ATTENDEE, ORGANIZER, METHOD, alarm or recurrence is emitted, so download cannot schedule or notify others. Each export has a fresh UUID: these are independent snapshots, not revisioned calendar updates; repeated imports can create duplicates.
+
+A small serializer is sufficient for this fixed subset and avoids a broad parser dependency. It validates the existing bounded configuration, rejects controls and overlong titles, escapes TEXT separators, uses CRLF and folds at 75 UTF-8 octets without splitting code points. The form reads only committed configuration; uncommitted clock/work-hour fields remain uncommitted. Titles stay in component state and the file, not the shared URL. See [RFC 5545](https://www.rfc-editor.org/rfc/rfc5545), sections 3.1, 3.3.5, 3.3.11 and 3.6.1.

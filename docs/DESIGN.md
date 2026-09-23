@@ -17,3 +17,7 @@ Phone layout stacks city identity, local summary and band; controls wrap with a 
 The meeting card now adds a compact grid of real shared starts. Each card gives its anchor time and UTC offset, plus the local clock in every included city. Six cards appear per page; all are derived from the existing full-interval-checked 15-minute suggestion grid. The selected card is explicit, and the exact-minute clock/slider remain available. At narrow widths the cards stack from three to two to one column. Supporting labels throughout the shell are at least 11 CSS pixels.
 
 The meeting picker stays mounted while its instant changes. Consecutive arrow presses preserve slider focus and advance one minute each; changes to the committed instant reset clock draft/error/ambiguity state without replacing the input node. An externally restored URL starts a new editor generation, retiring stale work-hour forms before they can overwrite the restored settings.
+
+## Calendar handoff
+
+A soft lavender section after meeting selection gives the planner a concrete next step. The two-column desktop form collapses on phones. A nearby off-hours message carries the existing availability boundary into the download flow. The title is explicitly local-only, and feedback says the file was created rather than claiming a calendar booking. Footer Source and Engineering walkthrough links connect the working demo to inspectable evidence without competing with the meeting controls.

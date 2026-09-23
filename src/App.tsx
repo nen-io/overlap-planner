@@ -27,6 +27,7 @@ import {
 import { decodeConfiguration, shareUrl } from "./domain/sharing";
 import { CityRow } from "./components/CityRow";
 import { MeetingPicker } from "./components/MeetingPicker";
+import { CalendarExport } from "./components/CalendarExport";
 
 export default function App() {
   const [initial] = useState(() => decodeConfiguration(window.location.hash));
@@ -435,6 +436,7 @@ export default function App() {
             if (act(() => next)) setNotice("");
           }}
         />
+        <CalendarExport config={config} fits={fits} />
         <section className="shared-overlap">
           <div>
             <Check size={16} />
@@ -484,7 +486,22 @@ export default function App() {
       <footer>
         <span>Thoughtful scheduling, across a small planet.</span>
         <span>NO ACCOUNTS. NO INVITATIONS. JUST OVERLAP.</span>
-        <span>OVERLAP / 2026</span>
+        <nav aria-label="Project links">
+          <a
+            href="https://github.com/nen-io/overlap-planner"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Source
+          </a>
+          <a
+            href="https://github.com/nen-io/overlap-planner/blob/main/docs/REVIEWER_GUIDE.md"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Engineering walkthrough
+          </a>
+        </nav>
       </footer>
     </div>
   );

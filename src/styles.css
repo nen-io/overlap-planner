@@ -1343,3 +1343,75 @@ input {
     grid-template-columns: 1fr;
   }
 }
+
+.calendar-export {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  padding: 32px;
+  margin-top: 28px;
+  border: 1px solid #d4d0e9;
+  border-radius: 16px;
+  background: #f1eff9;
+}
+.calendar-export .eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.calendar-export h2 {
+  font-family: Georgia, serif;
+  font-size: 32px;
+  font-weight: 400;
+  margin: 14px 0 12px;
+}
+.calendar-export p {
+  font-size: 13px;
+  line-height: 1.7;
+  color: #56516e;
+  margin: 9px 0;
+}
+.calendar-export .calendar-boundary {
+  font-weight: 600;
+}
+.calendar-export form {
+  min-width: 0;
+}
+.calendar-export label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 9px;
+}
+.calendar-export input {
+  width: 100%;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid #aaa1d0;
+  border-radius: 7px;
+  background: #fff;
+  color: #2d2a46;
+}
+.calendar-export .calendar-warning {
+  color: #7b482d;
+}
+.calendar-export button {
+  margin-top: 8px;
+}
+footer nav {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+footer nav a {
+  color: #55459b;
+  font-size: 12px;
+  text-underline-offset: 4px;
+}
+@media (max-width: 700px) {
+  .calendar-export {
+    grid-template-columns: 1fr;
+    padding: 22px;
+    gap: 20px;
+  }
+}

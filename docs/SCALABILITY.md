@@ -32,3 +32,7 @@ Hundreds of people and long search horizons require bounded search jobs, cancell
 Collaborative planning also changes consistency: a URL is currently an immutable share snapshot, not a shared authoritative document. Use explicit server revisions and conflict handling for simultaneous edits instead of silently overwriting another user's choices. Cache keys must include zone-database version/availability source revision where reproducibility matters. These are proposed redesigns, not shipped capabilities.
 
 The shared-start grid reuses the day's existing 92/96/100 quarter-hour slots and filters them once per render. It renders at most six cards, each with at most six local clock labels. Pagination stores only a page number and clamps it if the set shrinks. No unbounded horizon, minute-by-minute recommendation search, network request, or new persisted collection was added.
+
+## Calendar handoff cost
+
+Each export serializes one event for at most six cities and one 80-code-unit title. UTF-8 folding is linear in a small bounded output; only one short-lived Blob URL is created per click and it is revoked. There is no server, background calendar polling, subscription or event database. Large participant sets, recurrence or calendar synchronization would need different limits and a real provider/identity model; this export makes no capacity claim for those workloads.

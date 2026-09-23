@@ -27,3 +27,7 @@ A share link exposes cities, work windows and the chosen meeting instant to anyo
 Responsible reporting: use this repository's private vulnerability reporting feature if available. Otherwise open a minimal issue requesting a private channel; do not attach sensitive schedules or exploits publicly. No contact address is invented. The controls above are implemented demo boundaries, not a claim of comprehensive production security.
 
 Shared-start cards are derived from the validated configuration and existing full-interval slot results. They render curated city labels and Temporal-formatted times as React text. The UI-only restore generation retires stale editor forms and is never an authorization or time authority. This refinement introduces no new URL fields, storage, remote requests, or dependency.
+
+## Calendar export
+
+Export revalidates the bounded configuration. The only freeform value is a trimmed 1–80 UTF-16-code-unit title; control characters are rejected and TEXT backslashes, commas and semicolons are escaped. Description text comes from the curated cities and validated Temporal values. Fixed field names and UUID validation prevent property/line injection. There are no remote URLs, attendees, organizers, alarms, executable content or scheduling commands in the file. The Blob URL is revoked after download. Titles are excluded from shared URL state, but the downloaded plaintext file contains the title and meeting/city times. The app neither uploads the file nor imports it into a calendar automatically.

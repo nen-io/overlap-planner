@@ -42,3 +42,9 @@ Implement the behavior and acceptance tests above; document any deliberate limit
 - Consecutive slider arrow-key changes preserve focus and move by exact minutes. Clock drafts/errors reset when the committed instant or restored plan changes without remounting the picker.
 - A bounded, paginated grid presents shared starts with anchor UTC offsets and each participant's local time. Suggestions retain the 15-minute grid and existing full-duration checks; repeated wall times remain distinct exact instants.
 - Restoring a URL retires an old work-hour editor, so a stale draft cannot replace restored settings. Shell supporting text is at least 11 CSS pixels and the new grid supports 320px and enlarged text.
+
+## Calendar handoff refinement (23 September 2026)
+
+Download a single-event `.ics` snapshot of the currently committed meeting. The optional title is local-only, 1–80 UTF-16 code units after trimming, and rejects control characters. UTC DTSTART and exclusive DTEND encode exact selected instants and real elapsed duration, including repeated clock times and date boundaries. The file has a unique UID, UTC DTSTAMP, CRLF lines and RFC 5545 UTF-8 byte-aware folding. Plain-text description lists each supported city’s local date/time/offset and whether the complete interval fits. It contains no attendees, organizer, alarms, recurrence or scheduling METHOD; downloading sends no invitations. It does not silently apply uncommitted clock or work-hour drafts. Plans outside work hours may be exported with a visible reminder. Invalid titles preserve the plan and produce no download.
+
+Acceptance: parse actual download start/end; verify both London 01:30 occurrences separately; duration crossing spring DST/year end; long Unicode title folding and injection rejection; current plan/anchor changes reflected in subsequent downloads; narrow-screen keyboard operation and public engineering links.
