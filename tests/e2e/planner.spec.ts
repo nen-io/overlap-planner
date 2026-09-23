@@ -271,6 +271,10 @@ test("anchor date-range failure preserves plan and stale add form is safely reje
   await page.getByRole("button", { name: "Add to plan" }).click();
   await expect(page.getByRole("alert")).toContainText("only once");
   await expect(page.getByRole("article")).toHaveCount(4);
+  const slider = page.getByRole("slider");
+  await slider.focus();
+  await page.keyboard.press("ArrowRight");
+  await expect(slider).toBeFocused();
   expect(errors).toEqual([]);
 });
 

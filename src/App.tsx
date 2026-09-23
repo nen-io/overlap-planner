@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowRight,
   Check,
@@ -38,6 +38,19 @@ export default function App() {
   const [planRevision, setPlanRevision] = useState(0);
   const [addZone, setAddZone] = useState("Asia/Kolkata");
   const copyGeneration = useRef(0);
+  const addButton = useRef<HTMLButtonElement>(null);
+  const citySelector = useRef<HTMLSelectElement>(null);
+  const cityHeadings = useRef(new Map<string, HTMLHeadingElement>());
+  const focusAfterChange = useRef<string | null>(null);
+  useLayoutEffect(() => {
+    const target = focusAfterChange.current;
+    focusAfterChange.current = null;
+    if (target === "add") addButton.current?.focus();
+    else if (target) cityHeadings.current.get(target)?.focus();
+  }, [config]);
+  useEffect(() => {
+    if (adding) citySelector.current?.focus();
+  }, [adding]);
   const [sharing, setSharing] = useState(false);
   const [shareMessage, setShareMessage] = useState("");
   const bounds = useMemo(
@@ -156,8 +169,29 @@ export default function App() {
       setShareMessage("Clipboard unavailable. Select and copy the link below.");
     }
   };
+  const cancelAdding = () => {
+    setAdding(false);
+    const trigger = addButton.current;
+    if (trigger && !trigger.disabled) trigger.focus();
+    else {
+      // A shared-plan restore may fill the sixth slot while this form is open.
+      // Disabled triggers cannot receive focus; return to a surviving city so
+      // its remove/edit controls are the next keyboard stops instead.
+      cityHeadings.current.get(config.participants[0].zone)?.focus();
+    }
+  };
   return (
     <div className="app-shell">
+      <a
+        className="skip-link"
+        href="#meeting-time"
+        onClick={(event) => {
+          event.preventDefault();
+          document.getElementById("meeting-time")?.focus();
+        }}
+      >
+        Skip to meeting controls
+      </a>
       <header>
         <a href="./" className="brand">
           <span className="brand-icon">
@@ -170,7 +204,7 @@ export default function App() {
           <Link2 size={15} /> Share this plan
         </button>
       </header>
-      <main>
+      <main id="main-content">
         <section className="hero">
           <div>
             <div className="eyebrow">DIFFERENT PLACES. ONE MOMENT.</div>
@@ -288,6 +322,19 @@ export default function App() {
               </span>
             </div>
           </div>
+          <p className="band-help">
+            Click an hour band, or{" "}
+            <a
+              href="#meeting-time"
+              onClick={(event) => {
+                event.preventDefault();
+                document.getElementById("meeting-time")?.focus();
+              }}
+            >
+              use the time field and slider
+            </a>{" "}
+            for keyboard and touch control.
+          </p>
           <div className="anchor-ruler" aria-label="Anchor timeline labels">
             <span>{cityFor(config.anchorZone).city} time</span>
             <div>
@@ -311,6 +358,10 @@ export default function App() {
             {config.participants.map((person, index) => (
               <CityRow
                 key={`${person.zone}:${planRevision}`}
+                headingRef={(node) => {
+                  if (node) cityHeadings.current.set(person.zone, node);
+                  else cityHeadings.current.delete(person.zone);
+                }}
                 person={person}
                 index={index}
                 config={config}
@@ -334,6 +385,7 @@ export default function App() {
                   );
                 }}
                 onRemove={() => {
+                  focusAfterChange.current = "add";
                   act(
                     () => ({
                       ...config,
@@ -349,7 +401,10 @@ export default function App() {
           </div>
           <div className="planner-bottom">
             <button
+              ref={addButton}
               className="add-button"
+              aria-expanded={adding}
+              aria-controls={adding ? "city-add-form" : undefined}
               disabled={config.participants.length >= 6}
               onClick={() => {
                 setAdding(!adding);
@@ -369,9 +424,17 @@ export default function App() {
           </div>
           {adding && (
             <form
+              id="city-add-form"
               className="add-form"
+              onKeyDown={(event) => {
+                if (event.key === "Escape") {
+                  event.preventDefault();
+                  cancelAdding();
+                }
+              }}
               onSubmit={(event) => {
                 event.preventDefault();
+                focusAfterChange.current = addZone;
                 if (
                   act(
                     () => ({
@@ -385,11 +448,13 @@ export default function App() {
                   )
                 )
                   setAdding(false);
+                else focusAfterChange.current = null;
               }}
             >
               <label>
                 City to add
                 <select
+                  ref={citySelector}
                   value={addZone}
                   onChange={(event) => setAddZone(event.target.value)}
                 >
@@ -402,6 +467,9 @@ export default function App() {
               </label>
               <button className="primary" type="submit">
                 Add to plan <Plus size={15} />
+              </button>
+              <button type="button" onClick={cancelAdding}>
+                Cancel adding city
               </button>
             </form>
           )}

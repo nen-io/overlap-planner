@@ -1415,3 +1415,76 @@ footer nav a {
     gap: 20px;
   }
 }
+
+.skip-link {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  transform: translateY(-160%);
+  z-index: 20;
+  padding: 14px;
+  background: #fff;
+  color: #302951;
+  border: 2px solid #635cbd;
+}
+.skip-link:focus {
+  transform: translateY(0);
+}
+.band-help {
+  font-size: 12px;
+  line-height: 1.7;
+  color: #555c71;
+  margin: 8px 20px 18px;
+}
+.band-help a {
+  color: #51438e;
+  text-underline-offset: 3px;
+}
+button:not(.band-cell),
+select,
+input:not([type="range"]) {
+  min-height: 44px;
+}
+button:not(.band-cell) {
+  min-width: 44px;
+}
+.hours-button,
+.hours-button span,
+.hours-editor label,
+.add-form label {
+  font-size: 12px;
+}
+.city-identity h3:focus-visible {
+  outline: 3px solid #635cbd;
+  outline-offset: 4px;
+}
+footer nav a {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+}
+@media (forced-colors: active) {
+  :focus-visible {
+    outline: 3px solid Highlight !important;
+  }
+  button,
+  input,
+  select {
+    border-color: ButtonText;
+  }
+  button:disabled {
+    opacity: 1;
+    color: GrayText;
+  }
+  .start-option.selected,
+  .meeting-marker {
+    border: 3px solid Highlight;
+  }
+  .band-cell.work {
+    border-bottom: 4px solid Highlight;
+  }
+  .skip-link {
+    background: Canvas;
+    color: CanvasText;
+  }
+}

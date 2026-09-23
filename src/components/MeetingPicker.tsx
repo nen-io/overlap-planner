@@ -1,5 +1,5 @@
 import { ArrowRight, Check, Clock3 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SharedStarts } from "./SharedStarts";
 import { Temporal } from "@js-temporal/polyfill";
 import {
@@ -33,6 +33,7 @@ export function MeetingPicker({
   const current = Temporal.Instant.from(
     config.meetingInstant,
   ).toZonedDateTimeISO(config.anchorZone);
+  const timeField = useRef<HTMLInputElement>(null);
   const [draft, setDraft] = useState(clock(current));
   const [error, setError] = useState("");
   const [choices, setChoices] = useState<Temporal.Instant[]>([]);
@@ -89,6 +90,7 @@ export function MeetingPicker({
               setError(
                 cause instanceof Error ? cause.message : "Invalid time.",
               );
+              timeField.current?.focus();
             }
           }}
         >
@@ -98,6 +100,7 @@ export function MeetingPicker({
           <div className="time-entry">
             <input
               id="meeting-time"
+              ref={timeField}
               type="text"
               inputMode="numeric"
               placeholder="HH:MM"
@@ -190,6 +193,7 @@ export function MeetingPicker({
                 );
                 setError("");
                 setChoices([]);
+                timeField.current?.focus();
               }}
             >
               {index === 0 ? "First" : "Second"} {draft} ·{" "}

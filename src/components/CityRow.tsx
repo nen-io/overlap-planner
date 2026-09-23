@@ -1,6 +1,6 @@
 import { Moon, Sun, X } from "lucide-react";
 import { Temporal } from "@js-temporal/polyfill";
-import { useState } from "react";
+import { useEffect, useId, useRef, useState, type Ref } from "react";
 import {
   cityFor,
   clock,
@@ -19,6 +19,7 @@ interface Props {
   slots: Slot[];
   progress: number;
   durationWidth: number;
+  headingRef: Ref<HTMLHeadingElement>;
   onHours: (start: number, end: number) => void;
   onRemove: () => void;
   onPick: (instant: string) => void;
@@ -30,6 +31,7 @@ export function CityRow({
   slots,
   progress,
   durationWidth,
+  headingRef,
   onHours,
   onRemove,
   onPick,
@@ -37,6 +39,19 @@ export function CityRow({
   const city = cityFor(person.zone);
   const summary = participantSummary(config, person);
   const [editing, setEditing] = useState(false);
+  const editButton = useRef<HTMLButtonElement>(null);
+  const startField = useRef<HTMLSelectElement>(null);
+  const endField = useRef<HTMLSelectElement>(null);
+  const editorId = useId();
+  const errorId = useId();
+  useEffect(() => {
+    if (editing) startField.current?.focus();
+  }, [editing]);
+  function closeEditor() {
+    setEditing(false);
+    setError("");
+    editButton.current?.focus();
+  }
   const [start, setStart] = useState(String(person.workStartHour));
   const [end, setEnd] = useState(String(person.workEndHour));
   const [error, setError] = useState("");
@@ -48,7 +63,7 @@ export function CityRow({
           {daytime ? <Sun size={21} /> : <Moon size={21} />}
         </div>
         <div>
-          <h3>
+          <h3 ref={headingRef} tabIndex={-1}>
             {city.city}
             {person.zone === config.anchorZone && (
               <span className="anchor-pill">ANCHOR</span>
@@ -124,7 +139,10 @@ export function CityRow({
         </div>
         <div className="work-caption">
           <button
+            ref={editButton}
             className="hours-button"
+            aria-label={`Work hours in ${city.city}: ${hourLabel(person.workStartHour)}–${hourLabel(person.workEndHour)}. Edit`}
+            aria-controls={editing ? editorId : undefined}
             aria-expanded={editing}
             onClick={() => {
               setStart(String(person.workStartHour));
@@ -140,27 +158,40 @@ export function CityRow({
       </div>
       {editing && (
         <form
+          id={editorId}
           className="hours-editor"
+          onKeyDown={(event) => {
+            if (event.key === "Escape") {
+              event.preventDefault();
+              closeEditor();
+            }
+          }}
           onSubmit={(event) => {
             event.preventDefault();
             try {
               onHours(Number(start), Number(end));
-              setEditing(false);
-              setError("");
+              closeEditor();
             } catch (cause) {
               setError(
                 cause instanceof Error
                   ? cause.message
                   : "Invalid working hours.",
               );
+              endField.current?.focus();
             }
           }}
         >
           <label>
             Work starts in {city.city}
             <select
+              ref={startField}
+              aria-invalid={Boolean(error)}
+              aria-describedby={error ? errorId : undefined}
               value={start}
-              onChange={(event) => setStart(event.target.value)}
+              onChange={(event) => {
+                setStart(event.target.value);
+                setError("");
+              }}
             >
               {Array.from({ length: 24 }, (_, value) => (
                 <option value={value} key={value}>
@@ -172,8 +203,14 @@ export function CityRow({
           <label>
             Work ends in {city.city}
             <select
+              ref={endField}
+              aria-invalid={Boolean(error)}
+              aria-describedby={error ? errorId : undefined}
               value={end}
-              onChange={(event) => setEnd(event.target.value)}
+              onChange={(event) => {
+                setEnd(event.target.value);
+                setError("");
+              }}
             >
               {Array.from({ length: 24 }, (_, value) => value + 1).map(
                 (value) => (
@@ -187,8 +224,11 @@ export function CityRow({
           <button className="primary" type="submit">
             Save hours
           </button>
+          <button type="button" onClick={closeEditor}>
+            Cancel hours edit
+          </button>
           {error && (
-            <p className="error" role="alert">
+            <p id={errorId} className="error" role="alert">
               {error}
             </p>
           )}

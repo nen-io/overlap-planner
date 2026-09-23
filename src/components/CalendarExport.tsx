@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { CalendarDays, Download } from "lucide-react";
 import { calendarFile } from "../domain/calendar";
 import type { Configuration } from "../domain/planner";
@@ -10,6 +10,7 @@ export function CalendarExport({
   config: Configuration;
   fits: boolean;
 }) {
+  const titleField = useRef<HTMLInputElement>(null);
   const [title, setTitle] = useState("Team catch-up");
   const [error, setError] = useState("");
   const [downloaded, setDownloaded] = useState<Configuration | null>(null);
@@ -52,16 +53,20 @@ export function CalendarExport({
                 ? cause.message
                 : "Calendar file could not be created.",
             );
+            titleField.current?.focus();
           }
         }}
       >
         <label htmlFor="calendar-title">Meeting title</label>
         <input
           id="calendar-title"
+          ref={titleField}
           value={title}
           maxLength={80}
           aria-invalid={!!error}
-          aria-describedby="calendar-help"
+          aria-describedby={
+            error ? "calendar-help calendar-error" : "calendar-help"
+          }
           onChange={(event) => {
             setTitle(event.target.value);
             setError("");
@@ -82,7 +87,7 @@ export function CalendarExport({
           <Download size={16} /> Download calendar file
         </button>
         {error ? (
-          <p className="error" role="alert">
+          <p id="calendar-error" className="error" role="alert">
             {error}
           </p>
         ) : null}

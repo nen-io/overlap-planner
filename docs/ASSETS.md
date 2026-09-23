@@ -7,3 +7,5 @@ System fonts avoid remote font requests. Lucide icons come from the pinned `luci
 `docs/screenshots/desktop.png` and `mobile.png` are actual Playwright captures of the running, populated application with shared-start cards at 1440px and 390px. They are not image-generated mockups. There are no raster/media assets or third-party calls in the app itself. Original authored assets and source follow the repository MIT license; dependency licenses remain with their packages.
 
 `docs/screenshots/calendar-export.png` is an actual Chromium region capture after downloading London's second 01:30 occurrence on 25 October 2026, from `tests/e2e/calendar.spec.ts`. It shows the off-hours reminder and real download feedback; no calendar-client import or invitation is depicted.
+
+`accessible-hours.png` captures the actual work-hours editor at 320px after doubling semantic text sizes.

@@ -62,6 +62,6 @@ The planner supports eleven curated cities, calendar dates from 2000 through 209
 
 Day/night shading is a **07:00–19:00 daytime guide**, not astronomical sunrise/sunset data. Future and historical zone behavior comes from the runtime's time-zone database through the polyfill; government rule changes require runtime updates. Share links contain settings and meeting times: they are not encrypted secrets.
 
-[How it works](docs/ARCHITECTURE.md) · [Security](docs/SECURITY.md) · [Scalability](docs/SCALABILITY.md) · [Tests and evidence](docs/TESTING.md) · [Original assets](docs/ASSETS.md)
+[How it works](docs/ARCHITECTURE.md) · [Security](docs/SECURITY.md) · [Scalability](docs/SCALABILITY.md) · [Tests and evidence](docs/TESTING.md) · [Accessibility](docs/ACCESSIBILITY.md) · [Original assets](docs/ASSETS.md)
 
 MIT licensed.

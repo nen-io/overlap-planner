@@ -21,3 +21,7 @@ The meeting picker stays mounted while its instant changes. Consecutive arrow pr
 ## Calendar handoff
 
 A soft lavender section after meeting selection gives the planner a concrete next step. The two-column desktop form collapses on phones. A nearby off-hours message carries the existing availability boundary into the download flow. The title is explicitly local-only, and feedback says the file was created rather than claiming a calendar booking. Footer Source and Engineering walkthrough links connect the working demo to inspectable evidence without competing with the meeting controls.
+
+## Keyboard and human-use refinement
+
+A first-Tab skip link reaches meeting controls. A visible hour-band hint explains equivalent field/slider access instead of introducing hundreds of Tab stops. Essential work-hour text is 12px, actionable controls are 44px, and narrow editors wrap naturally. Forced colors retain focus/selected outlines and reduced motion stays respected. ACCESSIBILITY.md documents exact tasks and coverage limits.
